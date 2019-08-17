@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>高德地图根据ip定位到当前城市</title>
+    <style>
+        .Amap{
+            width: 80%;
+            height: 500px;
+            margin: auto;
+            
+        }
+        .text{
+            width: 80%;
+            height: 200px;
+            text-align: center;
+            margin: auto;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="text">
+        高德地图api ，获取自动获取当前位置
+    </div>
+    <div class="Amap" id="Amap">
+
+    </div>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=YouAppKey&plugin=AMap.CitySearch"></script>
+    <script>
+          // 初始化高德地图
+          var map = new AMap.Map('Amap',{
+               resizeEnable: true, //
+               zoom: 11,//级别
+               center: [116.397428, 39.90923],//中心点坐
+          });
+         //地图载入完成事件 
+         map.on('complete', function () {
+             showIpCity();
+         })
+        //根据ip定位城市 
+        function showIpCity(){
+            var citysearch = new AMap.CitySearch();
+            citysearch.getLocalCity(function (status, result) {
+            console.log(status)
+            //如果高德地图插件响应成功!
+                if(status ==='complete',result.info ==='OK'){
+                    var cityinfo = result.city; //ip所在城市
+                    var citybounds = result.bounds; //地理信息 
+                    console.log(citybounds);
+                        map.setBounds(citybounds); //可视区域设置
+                }else{
+                    alert('定位插件响应失败');
+                }
+            })      
+        }
+    </script>
+</body>
+</html>
